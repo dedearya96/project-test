@@ -24,7 +24,7 @@ class AuthServices {
     }
 
     currentUser = async () => {
-        return axios.post(API_URL + "/current-user").then((response) => {
+        return axios.get(API_URL + "/current-user").then((response) => {
             return response.data;
 
         })
