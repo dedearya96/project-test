@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { API_URL } from '../utils/BaseUrl';
+import AuthHeader from "../utils/AuthHeader";
 
 class AuthServices {
     register = async (name, email, password, c_password) => {
@@ -24,10 +25,9 @@ class AuthServices {
     }
 
     currentUser = async () => {
-        return axios.get(API_URL + "/current-user").then((response) => {
-            return response.data;
-
-        })
+        return axios.get(API_URL + "/current-user", {
+            headers: AuthHeader()
+        });
     }
 
     logout = async () => {
@@ -35,10 +35,9 @@ class AuthServices {
         const token = user.accessToken
         return axios.post(API_URL + "/logout", {
             token
-        }).then((response) => {
-            localStorage.removeItem("user");
-            return response.data;
-        })
+        }, {
+            headers: AuthHeader()
+        });
     }
 }
 

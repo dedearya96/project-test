@@ -24,7 +24,7 @@ class UsersController extends Controller
     public function getAllUser()
     {
         try {
-            $user = User::get(['id', 'name', 'email']);
+            $user = User::get(['id', 'name', 'email', 'created_at']);
             return response()->json($user);
         } catch (\Throwable $e) {
             return response()->json([

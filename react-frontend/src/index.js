@@ -2,20 +2,17 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
-import LoginPage from './pages/auth/LoginPage';
-import RegisterPage from './pages/auth/RegisterPage';
-import HomePage from './pages/account/HomePage';
 import reportWebVitals from './reportWebVitals';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import UsersPage from './pages/account/UsersPage';
-import ChangePassword from './pages/account/ChangePassword';
-import UpdateProfile from './pages/account/UpdateProfile';
-
+import { Provider } from 'react-redux';
+import store from "./store";
+import 'react-toastify/dist/ReactToastify.css';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <UpdateProfile />
+    <Provider store={store}>
+      <App />
+    </Provider>
   </React.StrictMode>
 );
 
