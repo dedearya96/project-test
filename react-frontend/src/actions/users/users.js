@@ -104,10 +104,8 @@ export const changePassword = (old_password, new_password, confir_password) => (
 }
 
 export const updateProfile = (name) => (dispatch) => {
-    console.log("Masuk Action");
     return UsersServices.updateProfile(name).then(
         (response) => {
-            console.log("Response True");
             dispatch({
                 type: UPDATE_PROFILE_SUCCESS,
             });
