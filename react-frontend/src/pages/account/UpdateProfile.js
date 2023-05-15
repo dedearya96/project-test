@@ -1,42 +1,41 @@
 import React, { useState, useEffect } from "react";
 import Header from "../../components/Header";
 import { useDispatch, useSelector } from "react-redux";
-import { currentUser, updateProfile } from "../../actions/users/users";
-import { useNavigate } from "react-router-dom";
+import { getCurrentUser, updateProfile } from "../../actions/users/users";
+import { useNavigate, Navigate } from "react-router-dom";
 import { cleareMessage } from "../../actions/auth/message";
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 export default function UpdateProfile() {
-    const [name, setName] = useState('');
+    const [name, setName] = useState(useSelector(state => state.auth.user.users['name']));
     const navigate = useNavigate();
-    const [isLoading, setIsLoading] = useState(false);
     const dispatch = useDispatch();
     const { message } = useSelector(state => state.message);
-    const currentuser = useSelector(state => state.users.currentUser);
+    const { isLoading } = useSelector(state => state.users);
+    const { user } = useSelector((state) => state.auth);
     const isButtonDisabled = name === '';
 
     useEffect(() => {
-        dispatch(currentUser());
+        dispatch(getCurrentUser());
         dispatch(cleareMessage());
-        if (currentuser) {
-            setName(currentuser.name);
-        }
     }, [dispatch]);
 
     function updateProfileAction(e) {
         e.preventDefault();
-        setIsLoading(true);
         dispatch(updateProfile(name))
             .then(() => {
-                setIsLoading(false);
                 navigate('/profile');
                 toast.success('Profile successfully updated', {
                     position: toast.POSITION.TOP_RIGHT
                 });
-            }).catch(() => {
-                setIsLoading(false);
-            })
+            }).catch((e) => {
+
+            });
+    }
+
+    if (!user) {
+        return <Navigate to="/login" />;
     }
 
     return (

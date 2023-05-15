@@ -1,11 +1,13 @@
 import React from 'react';
-import {formatDay} from "../utils/FormatDay";
+import { formatDay } from "../utils/FormatDay";
 
 function UsersList({ users }) {
-    return (
+    return (users.length === 0 ? (
+        <p className='text-center'>No users found</p>
+    ) : (
         <table className='table-auto border-collapse'>
             <thead>
-                <tr  className="bg-gray-100">
+                <tr className="bg-gray-100">
                     <th className="border px-4 py-2">Id</th>
                     <th className="border px-4 py-2">Name</th>
                     <th className="border px-4 py-2">Email</th>
@@ -13,9 +15,7 @@ function UsersList({ users }) {
                 </tr>
             </thead>
             <tbody>
-                {users.length === 0 ? (
-                    <p>No users found</p>
-                ) : users.map(user => (
+                {users.map(user => (
                     <tr key={user.id}>
                         <td className="border px-4 py-2">{user.id}</td>
                         <td className="border px-4 py-2">{user.name}</td>
@@ -24,7 +24,7 @@ function UsersList({ users }) {
                     </tr>
                 ))}
             </tbody>
-        </table>
+        </table>)
     );
 }
 

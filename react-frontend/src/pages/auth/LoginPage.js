@@ -4,7 +4,7 @@ import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { login } from "../../actions/auth/auth";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Navigate } from "react-router-dom";
 import 'react-toastify/dist/ReactToastify.css';
 import { cleareMessage } from "../../actions/auth/message";
 
@@ -13,8 +13,9 @@ export default function LoginPage() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
     const { message } = useSelector(state => state.message);
+    const { isLoading } = useSelector(state => state.auth);
+    const { user } = useSelector((state) => state.auth);
     const dispatch = useDispatch();
     const isButtonDisabled = email === '' || password === '';
 
@@ -28,16 +29,18 @@ export default function LoginPage() {
 
     function handleLogin(e) {
         e.preventDefault();
-        setIsLoading(true);
         dispatch(login(email, password))
-            .then((res) => {
-                setIsLoading(false);
+            .then(() => {
                 navigate('/home');
                 window.location.reload();
             })
             .catch(() => {
-                setIsLoading(false);
+
             })
+    }
+
+    if (user) {
+        return <Navigate to="/home" />;
     }
 
     return (

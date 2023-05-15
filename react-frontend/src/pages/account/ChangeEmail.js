@@ -1,46 +1,42 @@
 import React, { useState, useEffect } from "react";
 import Header from "../../components/Header";
 import { useDispatch, useSelector } from "react-redux";
-import { changeEmail } from "../../actions/users/users";
-import { useNavigate } from "react-router-dom";
-import { currentUser } from "../../actions/users/users";
+import { changeEmail, getCurrentUser } from "../../actions/users/users";
+import { Navigate, useNavigate } from "react-router-dom";
 import { cleareMessage } from "../../actions/auth/message";
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 export default function ChangeEmail() {
-    const [email, setEmail] = useState('');
+    const [email, setEmail] = useState(useSelector(state => state.auth.user.users['email']));
     const navigate = useNavigate();
-    const [isLoading, setIsLoading] = useState(false);
     const dispatch = useDispatch();
-    const currentuser = useSelector(state => state.users.currentUser);
+    const {isLoading } = useSelector(state => state.users);
+    const { user } = useSelector((state) => state.auth);
     const { message } = useSelector(state => state.message);
     const isButtonDisabled = email === '';
 
     useEffect(() => {
-        dispatch(currentUser());
+        dispatch(getCurrentUser());
         dispatch(cleareMessage());
-        if (currentuser) {
-            setEmail(currentuser.email);
-        }
     }, [dispatch]);
 
     function changeEmailAction(e) {
         e.preventDefault();
-        setIsLoading(true);
         dispatch(changeEmail(email))
             .then(() => {
-                setIsLoading(false);
                 navigate('/profile');
                 toast.success('Email successfully updated', {
                     position: toast.POSITION.TOP_RIGHT
                 });
-            })
-            .catch(() => {
-                setIsLoading(false);
-            })
+            }).catch((e) => {
+
+            });
     }
 
+    if (!user) {
+        return <Navigate to="/login" />;
+    }
 
     return (
         <div>
@@ -48,7 +44,7 @@ export default function ChangeEmail() {
             <ToastContainer />
             <div className="flex flex-col justify-center items-center">
                 <form onSubmit={changeEmailAction} className="bg-white p-6 rounded shadow-md w-full md:w-1/3 mx-auto">
-                    <h2 className="text-lg font-medium mb-4 text-center">Change Eamil</h2>
+                    <h2 className="text-lg font-medium mb-4 text-center">Change Email</h2>
                     {message && (
                         <div className="form-group text-center m-2">
                             <div className="alert alert-danger text-red-600" role="alert">

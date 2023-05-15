@@ -2,23 +2,25 @@ import React, { useEffect, useState } from "react";
 import Header from "../../components/Header";
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
-import { currentUser, deleteAccount } from "../../actions/users/users";
+import { getCurrentUser, deleteAccount } from "../../actions/users/users";
 import { cleareMessage } from "../../actions/auth/message";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Navigate } from "react-router-dom";
 import Modal from "../../components/Modal";
 import { formatDay } from "../../utils/FormatDay";
+import ProfilePlaceholder from "../../components/ProfilePlaceholder";
 
 export default function UsersPage() {
     const dispatch = useDispatch();
-    const currentuser = useSelector((state) => state.users.currentUser);
+    const currentuser = useSelector((state) => state.users);
+    const { user } = useSelector((state) => state.auth);
     const navigate = useNavigate();
     const [showModal, setShowModal] = useState(false);
 
     useEffect(() => {
         dispatch(cleareMessage());
-        dispatch(currentUser());
+        dispatch(getCurrentUser());
     }, [dispatch]);
 
     const handleDelete = () => {
@@ -43,6 +45,10 @@ export default function UsersPage() {
         navigate('/login');
     }
 
+    if (!user) {
+        return <Navigate to="/login" />;
+    }
+
     return (
         <div>
             <Header />
@@ -50,13 +56,15 @@ export default function UsersPage() {
             <div className="container w-full flex flex-col items-center">
                 <div className="bg-white p-4 rounded-lg">
                     <ul className="divide-y divide-gray-200">
-                        {currentuser && (
+                        {currentuser.isLoading ? (
+                            <ProfilePlaceholder />
+                        ) : currentuser.currentUser && (
                             <div className="max-w-sm rounded shadow-md">
                                 <div className="px-4 py-4">
-                                    <div className="font-bold text-md mb-2">{currentuser.name}</div>
-                                    <p className="text-gray-500 text-base">{currentuser.id}</p>
-                                    <p className="text-gray-500 text-base">{currentuser.email}</p>
-                                    <p className="text-gray-500 text-base">{formatDay(currentuser.created_at)}</p>
+                                    <div className="font-bold text-md mb-2">{currentuser.currentUser.name}</div>
+                                    <p className="text-gray-500 text-base">{currentuser.currentUser.id}</p>
+                                    <p className="text-gray-500 text-base">{currentuser.currentUser.email}</p>
+                                    <p className="text-gray-500 text-base">{formatDay(currentuser.currentUser.created_at)}</p>
                                 </div>
                                 <div className="flex justify-center m-4 p-4">
                                     <Link to="/update-profile">

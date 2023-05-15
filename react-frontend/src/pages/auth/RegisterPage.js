@@ -4,8 +4,8 @@ import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { register } from "../../actions/auth/auth";
 import { cleareMessage } from "../../actions/auth/message";
-import { useNavigate } from "react-router-dom";
-import { toast, ToastContainer } from 'react-toastify';
+import { useNavigate, Navigate } from "react-router-dom";
+import { toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 export default function RegisterPage() {
@@ -14,9 +14,10 @@ export default function RegisterPage() {
     const [password, setPassword] = useState('');
     const [c_password, setCPassword] = useState('');
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
-    const dispatch = useDispatch();
+    const { isLoading } = useSelector(state => state.auth);
+    const { user } = useSelector((state) => state.auth);
     const { message } = useSelector(state => state.message);
+    const dispatch = useDispatch();
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -29,20 +30,21 @@ export default function RegisterPage() {
 
     const isButtonDisabled = name === '' || email === '' || password === '';
 
+    if (user) {
+        return <Navigate to="/home" />;
+    }
 
     function handleRegister(e) {
         e.preventDefault();
-        setIsLoading(true);
         dispatch(register(name, email, password, c_password))
             .then(() => {
-                setIsLoading(false)
                 navigate('/login');
                 toast.success('Register successfully', {
                     position: toast.POSITION.TOP_RIGHT
                 });
             })
             .catch(() => {
-                setIsLoading(false);
+
             })
     }
 

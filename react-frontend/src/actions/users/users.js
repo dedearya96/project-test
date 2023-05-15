@@ -4,14 +4,19 @@ import {
     RETRIEVE_USERS_FAIL,
     CURRENT_USER,
     CURRENT_USER_FAIL,
+    REQUEST_CHANGE_EMAIL,
     CHANGE_EMAIL_SUCCESS,
     CHANGE_EMAIL_FAIL,
+    REQUEST_CHANGE_PASSWORD,
     CHANGE_PASSWORD_SUCCESS,
     CHANGE_PASSWORD_FAIL,
+    REQUEST_UPDATE_PROFILE,
     UPDATE_PROFILE_SUCCESS,
     UPDATE_PROFILE_FAIL,
+    REQUEST_DELETE_ACCOUNT,
     DELETE_ACCOUNT_SUCCESS,
     DELETE_ACCOUNT_FAIL,
+    REQUEST_CURRENT_USER,
 } from "./types";
 
 import UsersServices from "../../services/UsersServices";
@@ -35,7 +40,10 @@ export const retrieveUsers = () => async (dispatch) => {
     }
 }
 
-export const currentUser = () => async (dispatch) => {
+export const getCurrentUser = () => async (dispatch) => {
+    dispatch({
+        type: REQUEST_CURRENT_USER,
+    });
     try {
         const res = await AuthServices.currentUser()
         dispatch({
@@ -50,9 +58,11 @@ export const currentUser = () => async (dispatch) => {
 }
 
 export const changeEmail = (email) => async (dispatch) => {
+    dispatch({
+        type: REQUEST_CHANGE_EMAIL,
+    });
     return UsersServices.changeEmail(email).then(
         (response) => {
-            console.log("From action", response.data.message);
             dispatch({
                 type: CHANGE_EMAIL_SUCCESS,
             });
@@ -63,7 +73,7 @@ export const changeEmail = (email) => async (dispatch) => {
             return Promise.resolve();
         },
         (error) => {
-            const message = (error.response && error.response.data && error.response.data.message || error.message || error.toString());
+            const message = (error.response && error.response.data && error.response.data.message);
             dispatch({
                 type: CHANGE_EMAIL_FAIL,
             });
@@ -78,6 +88,9 @@ export const changeEmail = (email) => async (dispatch) => {
 
 
 export const changePassword = (old_password, new_password, confir_password) => (dispatch) => {
+    dispatch({
+        type: REQUEST_CHANGE_PASSWORD,
+    });
     return UsersServices.changePassword(old_password, new_password, confir_password).then(
         (response) => {
             dispatch({
@@ -90,7 +103,7 @@ export const changePassword = (old_password, new_password, confir_password) => (
             return Promise.resolve();
         },
         (error) => {
-            const message = (error.response && error.response.data && error.response.data.message || error.message || error.toString());
+            const message = (error.response && error.response.data && error.response.data.message);
             dispatch({
                 type: CHANGE_PASSWORD_FAIL,
             });
@@ -104,6 +117,9 @@ export const changePassword = (old_password, new_password, confir_password) => (
 }
 
 export const updateProfile = (name) => (dispatch) => {
+    dispatch({
+        type: REQUEST_UPDATE_PROFILE,
+    });
     return UsersServices.updateProfile(name).then(
         (response) => {
             dispatch({
@@ -116,7 +132,7 @@ export const updateProfile = (name) => (dispatch) => {
             return Promise.resolve();
         },
         (error) => {
-            const message = (error.response && error.response.data && error.response.data.message || error.message || error.toString());
+            const message = (error.response && error.response.data && error.response.data.message);
             dispatch({
                 type: UPDATE_PROFILE_FAIL,
             });
@@ -130,6 +146,9 @@ export const updateProfile = (name) => (dispatch) => {
 }
 
 export const deleteAccount = () => (dispatch) => {
+    dispatch({
+        type: REQUEST_DELETE_ACCOUNT,
+    });
     return UsersServices.deleteAccount().then(
         (response) => {
             dispatch({
@@ -142,7 +161,7 @@ export const deleteAccount = () => (dispatch) => {
             return Promise.resolve();
         },
         (error) => {
-            const message = (error.response && error.response.data && error.response.data.message || error.message || error.toString());
+            const message = (error.response && error.response.data && error.response.data.message);
             dispatch({
                 type: DELETE_ACCOUNT_FAIL,
             });

@@ -4,7 +4,7 @@ import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import Header from "../../components/Header";
 import { useDispatch, useSelector } from "react-redux";
 import { changePassword } from "../../actions/users/users";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { cleareMessage } from "../../actions/auth/message";
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -15,9 +15,10 @@ export default function ChangePassword() {
     const [confpassword, setConfPassword] = useState('');
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
     const navigate = useNavigate();
-    const [isLoading, setIsLoading] = useState(false);
     const dispatch = useDispatch();
     const { message } = useSelector(state => state.message);
+    const { isLoading } = useSelector(state => state.users);
+    const { user } = useSelector((state) => state.auth);
 
     useEffect(() => {
         dispatch(cleareMessage());
@@ -31,18 +32,20 @@ export default function ChangePassword() {
 
     function changePasswordAction(e) {
         e.preventDefault();
-        setIsLoading(true);
         dispatch(changePassword(oldpassword, newpassword, confpassword))
             .then((res) => {
                 console.log(res);
-                setIsLoading(false);
                 navigate("/profile");
                 toast.success('Password successfully updated', {
                     position: toast.POSITION.TOP_RIGHT
                 });
-            }).catch(() => {
-                setIsLoading(false);
-            })
+            }).catch((e)=>{
+                
+            });
+    }
+
+    if (!user) {
+        return <Navigate to="/login" />;
     }
 
     return (
