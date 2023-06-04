@@ -28,4 +28,3 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::post('/user-update', [UsersController::class, 'updateUsers']); //OK
     Route::get('/delete-account', [UsersController::class, 'deleteAccount']); //OK
 });
-
