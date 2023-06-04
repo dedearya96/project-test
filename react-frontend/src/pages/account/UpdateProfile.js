@@ -8,11 +8,11 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 export default function UpdateProfile() {
-    const [name, setName] = useState(useSelector(state => state.auth.user.users['name']));
+    const [name, setName] = useState('');
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const { message } = useSelector(state => state.message);
-    const { isLoading } = useSelector(state => state.users);
+    const { isLoading, currentUser } = useSelector(state => state.users);
     const { user } = useSelector((state) => state.auth);
     const isButtonDisabled = name === '';
 
@@ -20,6 +20,10 @@ export default function UpdateProfile() {
         dispatch(getCurrentUser());
         dispatch(cleareMessage());
     }, [dispatch]);
+
+    useEffect(() => {
+        setName(currentUser.name);
+    }, [currentUser]);
 
     function updateProfileAction(e) {
         e.preventDefault();
