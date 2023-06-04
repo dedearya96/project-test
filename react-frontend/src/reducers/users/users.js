@@ -22,7 +22,7 @@ import {
 const initialState = {
     usersList: [],
     isLoading: false,
-    currentUser: null,
+    currentUser: '',
     changeEmailSuccess: false,
     changePasswordSuccess: false,
     updateProfileSuccess: false,
@@ -52,6 +52,7 @@ const usersReducer = (state = initialState, action) => {
         case REQUEST_CURRENT_USER:
             return {
                 ...state,
+                currentUser: '',
                 isLoading: true
             }
         case CURRENT_USER:
@@ -64,7 +65,7 @@ const usersReducer = (state = initialState, action) => {
             return {
                 ...state,
                 isLoading: false,
-                currentUser: null,
+                currentUser: '',
             };
         case REQUEST_CHANGE_EMAIL:
             return {

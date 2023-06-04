@@ -6,13 +6,14 @@ import UsersPage from './pages/account/UsersPage';
 import ChangeEmail from './pages/account/ChangeEmail';
 import ChangePassword from './pages/account/ChangePassword';
 import UpdateProfile from './pages/account/UpdateProfile';
-import { ToastContainer} from 'react-toastify';
+import NewUserPage from './pages/account/NewUserPage';
+import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   return (
     <Router>
-       <ToastContainer />
+      <ToastContainer />
       <Routes>
         <Route path="/" element={<Navigate replace to="/home" />} />
         <Route exact path="/login" element={<LoginPage />} />
@@ -22,6 +23,7 @@ function App() {
         <Route exact path="/change-email" element={<ChangeEmail />} />
         <Route exact path='/change-password' element={<ChangePassword />} />
         <Route exact path='/update-profile' element={<UpdateProfile />} />
+        <Route exact path='/new-user' element={<NewUserPage />} />
       </Routes>
     </Router>
   );

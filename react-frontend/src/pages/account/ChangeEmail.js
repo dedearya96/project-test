@@ -8,10 +8,10 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 export default function ChangeEmail() {
-    const [email, setEmail] = useState(useSelector(state => state.auth.user.users['email']));
+    const [email, setEmail] = useState('');
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const {isLoading } = useSelector(state => state.users);
+    const { isLoading, currentUser } = useSelector(state => state.users);
     const { user } = useSelector((state) => state.auth);
     const { message } = useSelector(state => state.message);
     const isButtonDisabled = email === '';
@@ -19,6 +19,7 @@ export default function ChangeEmail() {
     useEffect(() => {
         dispatch(getCurrentUser());
         dispatch(cleareMessage());
+        setEmail(currentUser.email);
     }, [dispatch]);
 
     function changeEmailAction(e) {

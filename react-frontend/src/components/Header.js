@@ -62,6 +62,7 @@ export default function Header() {
                         <div className="absolute right-0 mt-2 py-2 w-48 bg-white rounded-lg shadow-xl">
                             <Link to="/home" className="block px-4 py-2 text-gray-800 hover:bg-gray-500 hover:text-white">Home</Link>
                             <Link to="/profile" className="block px-4 py-2 text-gray-800 hover:bg-gray-500 hover:text-white">Profile</Link>
+                            <Link to="/new-user" className="block px-4 py-2 text-gray-800 hover:bg-gray-500 hover:text-white">New User</Link>
                             <a href="#" onClick={handleLogout} className="block px-4 py-2 text-gray-800 hover:bg-gray-500 hover:text-white">Logout</a>
                             {showModal && (
                                 <Modal onClose={cancelLogout}>
