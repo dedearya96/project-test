@@ -19,8 +19,11 @@ export default function ChangeEmail() {
     useEffect(() => {
         dispatch(getCurrentUser());
         dispatch(cleareMessage());
-        setEmail(currentUser.email);
     }, [dispatch]);
+
+    useEffect(() => {
+       setEmail(currentUser.email);
+    }, [currentUser]);
 
     function changeEmailAction(e) {
         e.preventDefault();
